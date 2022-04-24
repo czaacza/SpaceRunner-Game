@@ -18,14 +18,13 @@ public class InfoLabel extends Label {
     public final static String BACKGROUND_IMAGE = "file:src/main/resources/view/shipchooser/blue_button13.png";
 
     public InfoLabel(String text){
-
         setPrefWidth(380);
         setPrefHeight(49);
         setText(text);
         setWrapText(true);
-        setLabelFont();
         setAlignment(Pos.CENTER);
 
+        setLabelFont();
         setLabelBackground();
     }
 

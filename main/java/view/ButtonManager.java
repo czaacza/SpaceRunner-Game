@@ -22,7 +22,7 @@ public class ButtonManager {
         this.subSceneManager = subSceneManager;
     }
 
-    public void createButtons(){
+    public void createMainButtons(){
         createStartButton();
         createScoresButton();
         createHelpButton();
