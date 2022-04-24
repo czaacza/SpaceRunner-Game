@@ -14,8 +14,8 @@ public class SpaceRunnerButton extends Button {
 
 
     private final String FONT_PATH = "src/main/resources/model/kenvector_future.ttf";
-    private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url(blue_button05.png);";
-    private final String BUTTON_FREE_STYLE =    "-fx-background-color: transparent; -fx-background-image: url(blue_button04.png);";
+    private String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url(blue_button05.png);";
+    private String BUTTON_FREE_STYLE =    "-fx-background-color: transparent; -fx-background-image: url(blue_button04.png);";
 
     public SpaceRunnerButton(String text) {
         setText(text);
@@ -25,6 +25,19 @@ public class SpaceRunnerButton extends Button {
         setStyle(BUTTON_FREE_STYLE);
         initializeButtonListener();
     }
+
+    public SpaceRunnerButton(String text, String BUTTON_FREE_STYLE, String BUTTON_PRESSED_STYLE  ) {
+        this.BUTTON_FREE_STYLE = BUTTON_FREE_STYLE;
+        this.BUTTON_PRESSED_STYLE = BUTTON_PRESSED_STYLE;
+
+        setText(text);
+        setButtonFont();
+        setPrefWidth(190);
+        setPrefHeight(49);
+        setStyle(BUTTON_FREE_STYLE);
+        initializeButtonListener();
+    }
+
 
     private void setButtonFont() {
         try {
@@ -82,5 +95,4 @@ public class SpaceRunnerButton extends Button {
         });
 
     }
-
 }

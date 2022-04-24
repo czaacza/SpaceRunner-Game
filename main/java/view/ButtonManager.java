@@ -3,6 +3,7 @@ package view;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import model.SpaceRunnerButton;
+import model.SpaceRunnerSubScene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +11,24 @@ import java.util.List;
 public class ButtonManager {
 
     private final List<SpaceRunnerButton> menuButtons;
-    private ViewManager viewManager;
+    private final ViewManager viewManager;
+    private final SubSceneManager subSceneManager;
+    private SpaceRunnerSubScene sceneToHide;
 
-    public ButtonManager(ViewManager viewManager) {
+
+    public ButtonManager(ViewManager viewManager, SubSceneManager subSceneManager) {
         this.menuButtons = new ArrayList<SpaceRunnerButton>();
         this.viewManager =viewManager;
+        this.subSceneManager = subSceneManager;
     }
 
-    public void createMenuButtons(){
+    public void createButtons(){
         createStartButton();
         createScoresButton();
         createHelpButton();
         createCreditsButton();
         createExitButton();
+        viewManager.getMainPane().getChildren().addAll(menuButtons);
     }
 
     private void addMenuButton(SpaceRunnerButton button){
@@ -31,19 +37,45 @@ public class ButtonManager {
         menuButtons.add(button);
     }
 
+    private void showSubScene(SpaceRunnerSubScene subScene){
+        if(sceneToHide != null){
+            sceneToHide.moveSubScene();
+        }
+        subScene.moveSubScene();
+        sceneToHide = subScene;
+    }
+
     private void createStartButton(){
         SpaceRunnerButton startButton = new SpaceRunnerButton("PLAY");
         addMenuButton(startButton);
+        startButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                showSubScene(subSceneManager.getShipChooserSubScene());
+            }
+        });
     }
 
     private void createScoresButton(){
         SpaceRunnerButton scoresButton = new SpaceRunnerButton("SCORES");
         addMenuButton(scoresButton);
+        scoresButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                showSubScene(subSceneManager.getScoresSubScene());
+            }
+        });
     }
 
     private void createHelpButton(){
         SpaceRunnerButton helpButton = new SpaceRunnerButton("HELP");
         addMenuButton(helpButton);
+        helpButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                showSubScene(subSceneManager.getHelpSubScene());
+            }
+        });
     }
 
     private void createCreditsButton(){
@@ -52,7 +84,7 @@ public class ButtonManager {
         creditsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                viewManager.getCreditsSubScene().moveSubScene();
+                showSubScene(subSceneManager.getCreditsSubScene());
             }
         });
     }
@@ -60,6 +92,14 @@ public class ButtonManager {
     private void createExitButton(){
         SpaceRunnerButton exitButton = new SpaceRunnerButton("EXIT");
         addMenuButton(exitButton);
+
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                viewManager.getMainStage().close();
+            }
+        });
+
     }
 
     public List<SpaceRunnerButton> getMenuButtons() {

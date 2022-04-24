@@ -10,7 +10,7 @@ public class SpaceRunnerSubScene extends SubScene {
 
     private final static String FONT_PATH = "src/main/resources/model/kenvector_future.ttf";
     private final static String BACKGROUND_IMAGE = "src/main/resources/model/blue_button10.png";
-    private boolean isHidden = true;
+    private static boolean isHidden = true;
 
     public SpaceRunnerSubScene() {
         super(new AnchorPane(), 600, 400);
@@ -33,7 +33,7 @@ public class SpaceRunnerSubScene extends SubScene {
         transition.setDuration(Duration.seconds(0.3));
         transition.setNode(this);
 
-        if(isHidden == true){
+        if(isHidden){
             transition.setToX(-676);
             isHidden = false;
         } else {
@@ -42,9 +42,11 @@ public class SpaceRunnerSubScene extends SubScene {
         }
 
         transition.play();
-
     }
 
+    public AnchorPane getPane(){
+        return (AnchorPane) this.getRoot();
+    }
 
 
 }
