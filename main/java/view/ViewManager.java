@@ -14,11 +14,11 @@ public class ViewManager {
     public static final int HEIGHT = 768;
     public static final int WIDTH = 1024;
 
-    private final AnchorPane mainPane;
-    private final Scene mainScene;
-    private final Stage mainStage;
-    private final ButtonManager buttonManager;
-    private final SubSceneManager subSceneManager;
+    private  AnchorPane mainPane;
+    private  Scene mainScene;
+    private  Stage mainStage;
+    private  ButtonManager buttonManager;
+    private  SubSceneManager subSceneManager;
 
     private final static int MENU_BUTTONS_START_X = 100;
     private final static int MENU_BUTTONS_START_Y = 150;
@@ -27,11 +27,12 @@ public class ViewManager {
     private SHIP chosenShip;
 
     public ViewManager(){
-        subSceneManager = new SubSceneManager(this);
-        buttonManager = new ButtonManager(this, subSceneManager);
         mainStage = new Stage();
         mainPane = new AnchorPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
+
+        subSceneManager = new SubSceneManager(this);
+        buttonManager = new ButtonManager(this, subSceneManager);
 
         mainStage.setX(2000);
         mainStage.setY(300);

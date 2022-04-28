@@ -17,7 +17,7 @@ public class SubSceneManager {
         creditsSubScene = new SpaceRunnerSubScene();
         helpSubScene = new SpaceRunnerSubScene();
         scoresSubScene = new SpaceRunnerSubScene();
-        shipChooserSubScene = new ShipChooserSubScene();
+        shipChooserSubScene = new ShipChooserSubScene(viewManager.getMainStage());
     }
 
     public void createSubScenes(){
