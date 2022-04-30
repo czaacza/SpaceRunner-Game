@@ -1,41 +1,33 @@
 package model;
 
 
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
 public class DefaultSubScene extends SpaceRunnerSubScene{
 
+    private final static String DEFAULT_BACKGROUND_IMAGE = "src/main/resources/model/blue.png";
+
     public DefaultSubScene() {
         super();
+        this.setSubSceneBackground(DEFAULT_BACKGROUND_IMAGE);
         this.moveSubScene();
+//        this.getPane().setStyle("-fx-border-color: #1EA7E1; -fx-border-width: 2px");
 
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(40);
+        vbox.setSpacing(70);
 
         LogoLabel titleLabel = new LogoLabel("SPACE RUNNER");
-        AuthorLabel authorLabel = new AuthorLabel("Author:\nMateusz Czarnecki\n(czaacza)");
+        AuthorLabel authorLabel = new AuthorLabel(" Author:\nczaacza");
 
         vbox.setLayoutX(45);
-        vbox.setLayoutY(90);
+        vbox.setLayoutY(70);
 
         vbox.getChildren().add(titleLabel);
         vbox.getChildren().add(authorLabel);
 
         getPane().getChildren().add(vbox);
-
     }
-
-    public void hideSubScene(){
-        TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(0.3));
-        transition.setNode(this);
-
-        transition.setToX(-676);
-    }
-
 
 }

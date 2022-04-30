@@ -5,6 +5,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 import java.io.FileInputStream;
@@ -14,15 +15,16 @@ public class AuthorLabel extends SpaceRunnerLabel{
 
     protected final String BACKGROUND_IMAGE = "file:src/main/resources/view/grey_button04.png";
 
-    private final int PREF_HEIGHT = 140;
+    private final int PREF_HEIGHT = 120;
     private final int PREF_WIDTH = 420;
     private final int FONT_SIZE = 23;
 
     public AuthorLabel(String text) {
         super(text);
+        setTextFill(Paint.valueOf("#EEEEEE"));
         setPrefHeight(PREF_HEIGHT);
         setPrefWidth(PREF_WIDTH);
-        setLabelBackground();
+//        setLabelBackground();
     }
 
     @Override
@@ -40,4 +42,6 @@ public class AuthorLabel extends SpaceRunnerLabel{
 
         setBackground(new Background(backgroundImage));
     }
+
+
 }
