@@ -6,7 +6,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.SHIP;
 import model.ShipPicker;
-import model.SpaceRunnerSubScene;
 
 import java.util.List;
 
@@ -43,11 +42,6 @@ public class ViewManager {
 
         subSceneManager.createSubScenes();
         buttonManager.createMainButtons();
-
-        SpaceRunnerSubScene subScene = new SpaceRunnerSubScene();
-
-        subScene.setLayoutX(200);
-        subScene.setLayoutY(100);
 
     }
 

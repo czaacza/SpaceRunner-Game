@@ -18,11 +18,12 @@ public class ButtonManager {
 
     public ButtonManager(ViewManager viewManager, SubSceneManager subSceneManager) {
         this.menuButtons = new ArrayList<SpaceRunnerButton>();
-        this.viewManager =viewManager;
+        this.viewManager = viewManager;
         this.subSceneManager = subSceneManager;
+        sceneToHide = subSceneManager.getDefaultSubScene();
     }
 
-    public void createMainButtons(){
+    public void createMainButtons() {
         createStartButton();
         createScoresButton();
         createHelpButton();
@@ -31,21 +32,28 @@ public class ButtonManager {
         viewManager.getMainPane().getChildren().addAll(menuButtons);
     }
 
-    private void addMenuButton(SpaceRunnerButton button){
+    private void addMenuButton(SpaceRunnerButton button) {
         button.setLayoutX(100);
         button.setLayoutY(150 + menuButtons.size() * 100);
         menuButtons.add(button);
     }
 
-    private void showSubScene(SpaceRunnerSubScene subScene){
-        if(sceneToHide != null){
+    private void showSubScene(SpaceRunnerSubScene subScene) {
+        System.out.println("Subscene: " + subScene);
+        System.out.println("Scene to hide: " + sceneToHide);
+
+        if (sceneToHide != null) {
             sceneToHide.moveSubScene();
+        }
+
+        if(sceneToHide == subScene){
+            subScene = subSceneManager.getDefaultSubScene();
         }
         subScene.moveSubScene();
         sceneToHide = subScene;
     }
 
-    private void createStartButton(){
+    private void createStartButton() {
         SpaceRunnerButton startButton = new SpaceRunnerButton("PLAY");
         addMenuButton(startButton);
         startButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -56,7 +64,7 @@ public class ButtonManager {
         });
     }
 
-    private void createScoresButton(){
+    private void createScoresButton() {
         SpaceRunnerButton scoresButton = new SpaceRunnerButton("SCORES");
         addMenuButton(scoresButton);
         scoresButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -67,7 +75,7 @@ public class ButtonManager {
         });
     }
 
-    private void createHelpButton(){
+    private void createHelpButton() {
         SpaceRunnerButton helpButton = new SpaceRunnerButton("HELP");
         addMenuButton(helpButton);
         helpButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -78,7 +86,7 @@ public class ButtonManager {
         });
     }
 
-    private void createCreditsButton(){
+    private void createCreditsButton() {
         SpaceRunnerButton creditsButton = new SpaceRunnerButton("CREDITS");
         addMenuButton(creditsButton);
         creditsButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -89,7 +97,7 @@ public class ButtonManager {
         });
     }
 
-    private void createExitButton(){
+    private void createExitButton() {
         SpaceRunnerButton exitButton = new SpaceRunnerButton("EXIT");
         addMenuButton(exitButton);
 

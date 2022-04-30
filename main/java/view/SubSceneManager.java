@@ -1,11 +1,13 @@
 package view;
 
+import model.DefaultSubScene;
 import model.ShipChooserSubScene;
 import model.SpaceRunnerSubScene;
 
 public class SubSceneManager {
 
     private final ViewManager viewManager;
+    private final DefaultSubScene defaultSubScene;
     private final SpaceRunnerSubScene creditsSubScene;
     private final SpaceRunnerSubScene helpSubScene;
     private final SpaceRunnerSubScene scoresSubScene;
@@ -14,6 +16,7 @@ public class SubSceneManager {
 
     public SubSceneManager(ViewManager viewManager) {
         this.viewManager = viewManager;
+        this.defaultSubScene = new DefaultSubScene();
         creditsSubScene = new SpaceRunnerSubScene();
         helpSubScene = new SpaceRunnerSubScene();
         scoresSubScene = new SpaceRunnerSubScene();
@@ -21,6 +24,7 @@ public class SubSceneManager {
     }
 
     public void createSubScenes(){
+        viewManager.getMainPane().getChildren().add(defaultSubScene);
         viewManager.getMainPane().getChildren().add(creditsSubScene);
         viewManager.getMainPane().getChildren().add(helpSubScene);
         viewManager.getMainPane().getChildren().add(scoresSubScene);
@@ -42,5 +46,9 @@ public class SubSceneManager {
 
     public SpaceRunnerSubScene getShipChooserSubScene() {
         return shipChooserSubScene;
+    }
+
+    public DefaultSubScene getDefaultSubScene() {
+        return defaultSubScene;
     }
 }

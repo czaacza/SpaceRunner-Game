@@ -57,19 +57,21 @@ public class GameViewManager {
         });
     }
 
-    private void initializeStage() {
-        gamePane = new AnchorPane();
-        gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
-        gameStage = new Stage();
-        gameStage.setScene(gameScene);
-    }
-
     public void createNewGame(Stage menuStage, SHIP chosenShip) {
         this.menuStage = menuStage;
         this.menuStage.hide();
         createGameLoop();
         createShip(chosenShip);
+        this.gameStage.setResizable(false);
+        this.gameStage.setTitle("SpaceRunner");
         this.gameStage.show();
+    }
+
+    private void initializeStage() {
+        gamePane = new AnchorPane();
+        gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
+        gameStage = new Stage();
+        gameStage.setScene(gameScene);
     }
 
     private void createShip(SHIP chosenShip) {
