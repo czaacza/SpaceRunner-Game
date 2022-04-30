@@ -2,6 +2,8 @@ package model;
 
 
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Pos;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class DefaultSubScene extends SpaceRunnerSubScene{
@@ -10,11 +12,20 @@ public class DefaultSubScene extends SpaceRunnerSubScene{
         super();
         this.moveSubScene();
 
-        LogoLabel titleLabel = new LogoLabel("SPACE RUNNER");
-        titleLabel.setLayoutX(45);
-        titleLabel.setLayoutY(50);
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(40);
 
-        getPane().getChildren().add(titleLabel);
+        LogoLabel titleLabel = new LogoLabel("SPACE RUNNER");
+        AuthorLabel authorLabel = new AuthorLabel("Author:\nMateusz Czarnecki\n(czaacza)");
+
+        vbox.setLayoutX(45);
+        vbox.setLayoutY(90);
+
+        vbox.getChildren().add(titleLabel);
+        vbox.getChildren().add(authorLabel);
+
+        getPane().getChildren().add(vbox);
 
     }
 

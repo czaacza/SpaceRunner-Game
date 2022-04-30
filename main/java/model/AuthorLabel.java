@@ -10,17 +10,28 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class InfoLabel extends SpaceRunnerLabel {
+public class AuthorLabel extends SpaceRunnerLabel{
 
-    private final int PREF_HEIGHT = 49;
-    private final int PREF_WIDTH = 380;
+    protected final String BACKGROUND_IMAGE = "file:src/main/resources/view/grey_button04.png";
+
+    private final int PREF_HEIGHT = 140;
+    private final int PREF_WIDTH = 420;
     private final int FONT_SIZE = 23;
 
-    public InfoLabel(String text) {
+    public AuthorLabel(String text) {
         super(text);
         setPrefHeight(PREF_HEIGHT);
         setPrefWidth(PREF_WIDTH);
         setLabelBackground();
+    }
+
+    @Override
+    void setLabelFont() {
+        try {
+            setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
+        } catch (FileNotFoundException e) {
+            setFont(Font.font("Verdana", FONT_SIZE));
+        }
     }
 
     private void setLabelBackground() {
@@ -29,13 +40,4 @@ public class InfoLabel extends SpaceRunnerLabel {
 
         setBackground(new Background(backgroundImage));
     }
-
-    protected void setLabelFont() {
-        try {
-            setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
-        } catch (FileNotFoundException e) {
-            setFont(Font.font("Verdana", FONT_SIZE));
-        }
-    }
-
 }
