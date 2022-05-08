@@ -1,10 +1,6 @@
 package model;
 
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class LogoLabel extends SpaceRunnerLabel {
 
@@ -15,17 +11,12 @@ public class LogoLabel extends SpaceRunnerLabel {
 
     public LogoLabel(String text) {
         super(text);
+        setLabelFont(FONT_SIZE);
         setTextFill(Paint.valueOf("#EEEEEE"));
         setPrefHeight(PREF_HEIGHT);
         setPrefWidth(PREF_WIDTH);
     }
 
-    protected void setLabelFont() {
-        try {
-            setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
-        } catch (FileNotFoundException e) {
-            setFont(Font.font("Verdana", FONT_SIZE));
-        }
-    }
+
 
 }

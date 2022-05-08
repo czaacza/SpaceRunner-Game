@@ -9,7 +9,7 @@ import javafx.util.Duration;
 public class SpaceRunnerSubScene extends SubScene {
 
     private final static String FONT_PATH = "src/main/resources/model/kenvector_future.ttf";
-    private final static String BACKGROUND_IMAGE = "src/main/resources/model/blue_button10.png";
+    private final static String BACKGROUND_IMAGE = "src/main/resources/view/menu/blue_button10.png";
     protected static boolean isHidden = true;
 
     public SpaceRunnerSubScene() {
@@ -41,7 +41,6 @@ public class SpaceRunnerSubScene extends SubScene {
             transition.setToX(0);
             isHidden = true;
         }
-        System.out.println("isHidden: " + SpaceRunnerSubScene.getIsHidden());
         transition.play();
     }
 

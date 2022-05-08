@@ -6,14 +6,10 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class AuthorLabel extends SpaceRunnerLabel{
 
-    protected final String BACKGROUND_IMAGE = "file:src/main/resources/view/grey_button04.png";
+    protected final String BACKGROUND_IMAGE = "file:src/main/resources/view/menu/grey_button04.png";
 
     private final int PREF_HEIGHT = 120;
     private final int PREF_WIDTH = 420;
@@ -24,17 +20,10 @@ public class AuthorLabel extends SpaceRunnerLabel{
         setTextFill(Paint.valueOf("#EEEEEE"));
         setPrefHeight(PREF_HEIGHT);
         setPrefWidth(PREF_WIDTH);
+        setLabelFont(FONT_SIZE);
 //        setLabelBackground();
     }
 
-    @Override
-    void setLabelFont() {
-        try {
-            setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
-        } catch (FileNotFoundException e) {
-            setFont(Font.font("Verdana", FONT_SIZE));
-        }
-    }
 
     private void setLabelBackground() {
         BackgroundImage backgroundImage = new BackgroundImage(new Image(BACKGROUND_IMAGE, PREF_WIDTH, PREF_HEIGHT, false, true),

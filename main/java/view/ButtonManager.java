@@ -39,14 +39,12 @@ public class ButtonManager {
     }
 
     private void showSubScene(SpaceRunnerSubScene subScene) {
-        System.out.println("Subscene: " + subScene);
-        System.out.println("Scene to hide: " + sceneToHide);
 
         if (sceneToHide != null) {
             sceneToHide.moveSubScene();
         }
 
-        if(sceneToHide == subScene){
+        if (sceneToHide == subScene) {
             subScene = subSceneManager.getDefaultSubScene();
         }
         subScene.moveSubScene();

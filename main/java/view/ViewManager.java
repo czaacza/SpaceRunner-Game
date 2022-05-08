@@ -46,7 +46,6 @@ public class ViewManager {
     }
 
     private void createBackground(){
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         Image image = new Image("file:src/main/resources/view/blue.png", 256,256, false, true);
         BackgroundImage background = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
         mainPane.setBackground(new Background(background));
