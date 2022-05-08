@@ -79,8 +79,10 @@ public class GameViewManager {
         createBackground();
         createShip(chosenShip);
         createGameElements();
+        System.out.println(brownMeteors[0].getLayoutY());
+        System.out.println(brownMeteors[1].getLayoutY());
+        System.out.println(brownMeteors[2].getLayoutY());
         createGameLoop();
-
 
         this.gameStage.setResizable(false);
         this.gameStage.setTitle("SpaceRunner");
@@ -88,27 +90,41 @@ public class GameViewManager {
     }
 
     private void createGameElements() {
-        brownMeteors = new ImageView[3];
-        for (ImageView brownMeteor : brownMeteors) {
-            brownMeteor = new ImageView(METEOR_BROWN_IMAGE);
-            setNewElementPosition(brownMeteor);
-            gamePane.getChildren().add(brownMeteor);
+        this.brownMeteors = new ImageView[3];
+        for (int i = 0; i < brownMeteors.length; i++) {
+            brownMeteors[i] = new ImageView(METEOR_BROWN_IMAGE);
+            setNewElementPosition(brownMeteors[i]);
+            gamePane.getChildren().add(brownMeteors[i]);
         }
-        greyMeteors = new ImageView[3];
-        for (ImageView greyMeteor : greyMeteors) {
-            greyMeteor = new ImageView(METEOR_GREY_IMAGE);
-            setNewElementPosition(greyMeteor);
-            gamePane.getChildren().add(greyMeteor);
+        this.greyMeteors = new ImageView[3];
+        for (int i = 0; i < greyMeteors.length; i++) {
+            greyMeteors[i] = new ImageView(METEOR_GREY_IMAGE);
+            setNewElementPosition(greyMeteors[i]);
+            gamePane.getChildren().add(greyMeteors[i]);
         }
     }
 
+    private void createGameLoop() {
+        gameTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                moveBackground();
+                moveGameElements();
+                reallocateGameElements();
+                moveShip();
+            }
+        };
+
+        gameTimer.start();
+    }
+
     private void moveGameElements(){
-        for (ImageView brownMeteor : brownMeteors) {
-            brownMeteor.setLayoutY(brownMeteor.getLayoutY() + 7);
+        for (ImageView brownMeteor : this.brownMeteors) {
+            brownMeteor.setLayoutY(brownMeteor.getLayoutY() + 3);
             brownMeteor.setRotate(brownMeteor.getRotate() + 4);
         }
-        for (ImageView greyMeteor : greyMeteors) {
-            greyMeteor.setLayoutY(greyMeteor.getLayoutY() + 7);
+        for (ImageView greyMeteor : this.greyMeteors) {
+            greyMeteor.setLayoutY(greyMeteor.getLayoutY() + 3);
             greyMeteor.setRotate(greyMeteor.getRotate() + 4);
         }
     }
@@ -143,20 +159,6 @@ public class GameViewManager {
         ship.setLayoutX(0.5 * GAME_WIDTH - 49.5);
         ship.setLayoutY(GAME_HEIGHT - 90);
         gamePane.getChildren().add(ship);
-    }
-
-    private void createGameLoop() {
-        gameTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                moveBackground();
-                moveGameElements();
-                reallocateGameElements();
-                moveShip();
-            }
-        };
-
-        gameTimer.start();
     }
 
     private void moveShip() {
