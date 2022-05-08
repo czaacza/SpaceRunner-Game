@@ -10,21 +10,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SHIP;
-import model.SmallInfoLabel;
-
-import java.util.Random;
 
 public class GameViewManager {
 
     private AnchorPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
+    private Stage menuStage;
 
     private static final int GAME_WIDTH = 600;
     private static final int GAME_HEIGHT = 800;
 
-    private Stage menuStage;
-    private ImageView ship;
+    private int playerHealthPoints;
+    private int points;
 
     private boolean isLeftKeyPressed;
     private boolean isRightKeyPressed;
@@ -35,33 +33,20 @@ public class GameViewManager {
     private GridPane gridPane2;
     private final static String BACKGROUND_IMAGE = "file:src/main/resources/view/menu/blue.png";
 
-    private final static String METEOR_BROWN_IMAGE = "file:src/main/resources/model/game_models/meteorBrown_med3.png";
-    private final static String METEOR_GREY_IMAGE = "file:src/main/resources/model/game_models/meteorGrey_med1.png";
+    GameElements gameElements;
 
-    private ImageView[] brownMeteors;
-    private ImageView[] greyMeteors;
-    Random randomPositionGenerator;
-
-    private ImageView star;
-    private SmallInfoLabel pointsLabel;
-    private ImageView[] playerLivesImages;
-    private int playerLifePoints;
-    private int points;
-    private final static String GOLD_STAR_IMAGE = "file:src/main/resources/model/game_models/star_gold.png";
-
-    private final static int STAR_RADIUS = 12;
     private final static int SHIP_RADIUS = 45;
     private final static int METEOR_RADIUS = 20;
-
+    private static final int HEALTH_PILL_RADIUS = 12;
+    private final static int STAR_RADIUS = 12;
 
     public GameViewManager() {
         initializeStage();
         createKeyListeners();
-        randomPositionGenerator = new Random();
+        gameElements = new GameElements(GAME_WIDTH, GAME_HEIGHT);
     }
 
     private void createKeyListeners() {
-
         gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -85,27 +70,50 @@ public class GameViewManager {
         });
     }
 
+    private void moveGameElements() {
+        gameElements.getStar().setLayoutY(gameElements.getStar().getLayoutY() + 4);
+        gameElements.getHealthPill().setLayoutY(gameElements.getHealthPill().getLayoutY() + 1.5);
+
+        for (ImageView brownMeteor : gameElements.getBrownMeteors()) {
+            brownMeteor.setLayoutY(brownMeteor.getLayoutY() + 3);
+            brownMeteor.setRotate(brownMeteor.getRotate() + 4);
+        }
+        for (ImageView greyMeteor : gameElements.getGreyMeteors()) {
+            greyMeteor.setLayoutY(greyMeteor.getLayoutY() + 3);
+            greyMeteor.setRotate(greyMeteor.getRotate() + 4);
+        }
+    }
+
     public void createNewGame(Stage menuStage, SHIP chosenShip) {
         this.menuStage = menuStage;
         this.menuStage.hide();
         createBackground();
-        createShip(chosenShip);
         createGameElements(chosenShip);
         createGameLoop();
-
         this.gameStage.setResizable(false);
         this.gameStage.setTitle("SpaceRunner");
         this.gameStage.show();
     }
 
     private void createGameElements(SHIP chosenShip) {
-        playerLifePoints = 3;
+        playerHealthPoints = 3;
 
-        createStarElement();
-        createPointsLabel();
-        createPlayerLivesImages(chosenShip);
-        createMeteors();
+        gameElements.createShip(chosenShip);
+        gameElements.createStarElement();
+        gameElements.createMeteors();
+        gameElements.createPointsLabel();
+        gameElements.createPlayerHealthImages(chosenShip);
+        gameElements.createHealthPill();
 
+        gamePane.getChildren().addAll(
+                gameElements.getShip(),
+                gameElements.getStar(),
+                gameElements.getPointsLabel(),
+                gameElements.getHealthPill()
+        );
+        gamePane.getChildren().addAll(gameElements.getBrownMeteors());
+        gamePane.getChildren().addAll(gameElements.getGreyMeteors());
+        gamePane.getChildren().addAll(gameElements.getPlayerHealthImages());
     }
 
     private void createGameLoop() {
@@ -114,49 +122,13 @@ public class GameViewManager {
             public void handle(long l) {
                 moveBackground();
                 moveGameElements();
-                reallocateGameElements();
+                gameElements.reallocateGameElements();
                 checkIfCollision();
                 moveShip();
             }
         };
 
         gameTimer.start();
-    }
-
-    private void setNewElementPosition(ImageView element) {
-        element.setLayoutX(randomPositionGenerator.nextInt(370));
-        element.setLayoutY(-(randomPositionGenerator.nextInt(3200) + 600));
-    }
-
-    private void moveGameElements() {
-        star.setLayoutY(star.getLayoutY() + 4);
-
-        for (ImageView brownMeteor : this.brownMeteors) {
-            brownMeteor.setLayoutY(brownMeteor.getLayoutY() + 3);
-            brownMeteor.setRotate(brownMeteor.getRotate() + 4);
-        }
-        for (ImageView greyMeteor : this.greyMeteors) {
-            greyMeteor.setLayoutY(greyMeteor.getLayoutY() + 3);
-            greyMeteor.setRotate(greyMeteor.getRotate() + 4);
-        }
-    }
-
-    private void reallocateGameElements() {
-
-        if (star.getLayoutY() > 1200) {
-            setNewElementPosition(star);
-        }
-
-        for (ImageView brownMeteor : brownMeteors) {
-            if (brownMeteor.getLayoutY() > 900) {
-                setNewElementPosition(brownMeteor);
-            }
-        }
-        for (ImageView greyMeteor : greyMeteors) {
-            if (greyMeteor.getLayoutY() > 900) {
-                setNewElementPosition(greyMeteor);
-            }
-        }
     }
 
     private void initializeStage() {
@@ -166,39 +138,14 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
-    private void createShip(SHIP chosenShip) {
-        ship = new ImageView(chosenShip.getShipURL());
-        ship.setLayoutX(0.5 * GAME_WIDTH - 49.5);
-        ship.setLayoutY(GAME_HEIGHT - 90);
-        int shipFitWidth;
-        int shipFitHeight;
-        if (chosenShip == SHIP.INVADER) {
-            shipFitWidth = 99;
-            shipFitHeight = 75;
-        } else if (chosenShip == SHIP.GUARDIAN) {
-            shipFitWidth = 112;
-            shipFitHeight = 75;
-        } else if (chosenShip == SHIP.ROGUE) {
-            shipFitWidth = 98;
-            shipFitHeight = 75;
-        } else {
-            shipFitWidth = 91;
-            shipFitHeight = 91;
-        }
-        ship.setFitWidth(shipFitWidth);
-        ship.setFitHeight(shipFitHeight);
-        gamePane.getChildren().add(ship);
-        System.out.println(ship.getFitWidth() + " " + ship.getFitHeight());
-    }
-
     private void moveShip() {
         if (isLeftKeyPressed && !isRightKeyPressed) {
             if (angle > -30) {
                 angle -= 5;
             }
-            ship.setRotate(angle);
-            if (ship.getLayoutX() > -20) {
-                ship.setLayoutX(ship.getLayoutX() - 3);
+            gameElements.getShip().setRotate(angle);
+            if (gameElements.getShip().getLayoutX() > -20) {
+                gameElements.getShip().setLayoutX(gameElements.getShip().getLayoutX() - 3);
             }
 
         }
@@ -206,9 +153,9 @@ public class GameViewManager {
             if (angle < 30) {
                 angle += 5;
             }
-            ship.setRotate(angle);
-            if (ship.getLayoutX() < 522) {
-                ship.setLayoutX(ship.getLayoutX() + 3);
+            gameElements.getShip().setRotate(angle);
+            if (gameElements.getShip().getLayoutX() < 522) {
+                gameElements.getShip().setLayoutX(gameElements.getShip().getLayoutX() + 3);
             }
         }
         if (!isLeftKeyPressed && !isRightKeyPressed) {
@@ -217,7 +164,7 @@ public class GameViewManager {
             } else if (angle > 0) {
                 angle -= 5;
             }
-            ship.setRotate(angle);
+            gameElements.getShip().setRotate(angle);
         }
         if (isLeftKeyPressed && isRightKeyPressed) {
             if (angle < 0) {
@@ -225,7 +172,7 @@ public class GameViewManager {
             } else if (angle > 0) {
                 angle -= 5;
             }
-            ship.setRotate(angle);
+            gameElements.getShip().setRotate(angle);
         }
     }
 
@@ -259,52 +206,9 @@ public class GameViewManager {
         }
     }
 
-    private void createStarElement() {
-        star = new ImageView(GOLD_STAR_IMAGE);
-        setNewElementPosition(star);
-        gamePane.getChildren().add(star);
-    }
-
-    private void createPointsLabel() {
-        pointsLabel = new SmallInfoLabel("POINTS: 000");
-        pointsLabel.setLayoutX(450);
-        pointsLabel.setLayoutY(20);
-        gamePane.getChildren().add(pointsLabel);
-    }
-
-    private void createPlayerLivesImages(SHIP chosenShip) {
-        playerLivesImages = new ImageView[3];
-        for (int i = 0; i < playerLivesImages.length; i++) {
-            playerLivesImages[i] = new ImageView(chosenShip.getLifeURL());
-            if (chosenShip == SHIP.UFO) {
-                playerLivesImages[i].setFitWidth(33);
-                playerLivesImages[i].setFitHeight(33);
-            }
-            playerLivesImages[i].setLayoutY(80);
-            playerLivesImages[i].setLayoutX(455 + (i * 50));
-            gamePane.getChildren().add(playerLivesImages[i]);
-        }
-    }
-
-    private void createMeteors() {
-        brownMeteors = new ImageView[3];
-        for (int i = 0; i < brownMeteors.length; i++) {
-            brownMeteors[i] = new ImageView(METEOR_BROWN_IMAGE);
-            setNewElementPosition(brownMeteors[i]);
-            gamePane.getChildren().add(brownMeteors[i]);
-        }
-
-        greyMeteors = new ImageView[3];
-        for (int i = 0; i < greyMeteors.length; i++) {
-            greyMeteors[i] = new ImageView(METEOR_GREY_IMAGE);
-            setNewElementPosition(greyMeteors[i]);
-            gamePane.getChildren().add(greyMeteors[i]);
-        }
-    }
-
     private void checkIfCollision() {
-        if (calculateDistance(ship.getLayoutX() + ship.getFitWidth() / 2, star.getLayoutX() + 15.5, ship.getLayoutY() + ship.getFitHeight() / 2, star.getLayoutY() + 15) < SHIP_RADIUS + STAR_RADIUS) {
-            setNewElementPosition(star);
+        if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, gameElements.getStar().getLayoutX() + 15.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, gameElements.getStar().getLayoutY() + 15) < SHIP_RADIUS + STAR_RADIUS) {
+            gameElements.setNewElementPosition(gameElements.getStar());
             points++;
             String textToSet = "POINTS : ";
             if (points < 10) {
@@ -314,27 +218,39 @@ public class GameViewManager {
                 textToSet = textToSet + "0";
             }
             textToSet = textToSet + points;
-            pointsLabel.setText(textToSet);
+            gameElements.getPointsLabel().setText(textToSet);
         }
 
-        for (ImageView brownMeteor : brownMeteors) {
-            if (calculateDistance(ship.getLayoutX() + ship.getFitWidth() / 2, brownMeteor.getLayoutX() + 22.5, ship.getLayoutY() + ship.getFitHeight() / 2, brownMeteor.getLayoutY() + 20) < SHIP_RADIUS + METEOR_RADIUS) {
+        if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, gameElements.getHealthPill().getLayoutX() + 12.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, gameElements.getHealthPill().getLayoutY() + 12.5) < SHIP_RADIUS + HEALTH_PILL_RADIUS) {
+            addPlayerLife();
+            gameElements.setNewElementPosition(gameElements.getHealthPill());
+        }
+
+        for (ImageView brownMeteor : gameElements.getBrownMeteors()) {
+            if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, brownMeteor.getLayoutX() + 22.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, brownMeteor.getLayoutY() + 20) < SHIP_RADIUS + METEOR_RADIUS) {
                 removePlayerLife();
-                setNewElementPosition(brownMeteor);
+                gameElements.setNewElementPosition(brownMeteor);
             }
         }
-        for (ImageView greyMeteor : greyMeteors) {
-            if (calculateDistance(ship.getLayoutX() + ship.getFitWidth() / 2, greyMeteor.getLayoutX() + 22.5, ship.getLayoutY() + ship.getFitHeight() / 2, greyMeteor.getLayoutY() + 20) < SHIP_RADIUS + METEOR_RADIUS) {
+        for (ImageView greyMeteor : gameElements.getGreyMeteors()) {
+            if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, greyMeteor.getLayoutX() + 22.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, greyMeteor.getLayoutY() + 20) < SHIP_RADIUS + METEOR_RADIUS) {
                 removePlayerLife();
-                setNewElementPosition(greyMeteor);
+                gameElements.setNewElementPosition(greyMeteor);
             }
         }
     }
 
+    private void addPlayerLife() {
+        if(playerHealthPoints < 3){
+            gamePane.getChildren().add(gameElements.getPlayerHealthImages()[playerHealthPoints]);
+            playerHealthPoints++;
+        }
+    }
+
     private void removePlayerLife() {
-        gamePane.getChildren().remove(playerLivesImages[playerLifePoints - 1]);
-        playerLifePoints--;
-        if (playerLifePoints <= 0) {
+        gamePane.getChildren().remove(gameElements.getPlayerHealthImages()[playerHealthPoints - 1]);
+        playerHealthPoints--;
+        if (playerHealthPoints <= 0) {
             gameStage.close();
             gameTimer.stop();
             menuStage.show();
