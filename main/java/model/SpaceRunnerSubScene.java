@@ -14,15 +14,20 @@ public class SpaceRunnerSubScene extends SubScene {
 
     public SpaceRunnerSubScene() {
         super(new AnchorPane(), 600, 400);
-        prefWidth(600);
-        prefHeight(400);
-        setSubSceneBackground(BACKGROUND_IMAGE);
+        setSubSceneBackground(BACKGROUND_IMAGE, 600, 400);
         setLayoutX(1024);
         setLayoutY(180);
     }
 
-    protected void setSubSceneBackground(String backgroundURL){
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:" + backgroundURL, 600, 400, false, true),
+    public SpaceRunnerSubScene(int width, int height) {
+        super(new AnchorPane(), width, height);
+        setSubSceneBackground(BACKGROUND_IMAGE, width, height);
+        setLayoutX(1024);
+        setLayoutY(180);
+    }
+
+    protected void setSubSceneBackground(String backgroundURL, int width, int height){
+        BackgroundImage backgroundImage = new BackgroundImage(new Image("file:" + backgroundURL, width, height, false, true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
 
         AnchorPane actualRoot = (AnchorPane) this.getRoot();

@@ -9,6 +9,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.EndGameScene;
 import model.SHIP;
 
 public class GameViewManager {
@@ -44,6 +45,8 @@ public class GameViewManager {
         initializeStage();
         createKeyListeners();
         gameElements = new GameElements(GAME_WIDTH, GAME_HEIGHT);
+        gameStage.setX(2000);
+        gameStage.setY(300);
     }
 
     private void createKeyListeners() {
@@ -93,6 +96,9 @@ public class GameViewManager {
         this.gameStage.setResizable(false);
         this.gameStage.setTitle("SpaceRunner");
         this.gameStage.show();
+//        EndGameScene endGameScene = new EndGameScene(points, gameStage, menuStage);
+//        endGameScene.moveSubScene();
+//        gamePane.getChildren().add(endGameScene);
     }
 
     private void createGameElements(SHIP chosenShip) {
@@ -127,7 +133,6 @@ public class GameViewManager {
                 moveShip();
             }
         };
-
         gameTimer.start();
     }
 
@@ -251,9 +256,11 @@ public class GameViewManager {
         gamePane.getChildren().remove(gameElements.getPlayerHealthImages()[playerHealthPoints - 1]);
         playerHealthPoints--;
         if (playerHealthPoints <= 0) {
-            gameStage.close();
+            EndGameScene endGameScene = new EndGameScene(points, gameStage, menuStage);
+            gamePane.getChildren().add(endGameScene);
+            endGameScene.moveSubScene();
             gameTimer.stop();
-            menuStage.show();
+
         }
     }
 

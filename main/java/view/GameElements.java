@@ -61,8 +61,6 @@ public class GameElements {
         }
         ship.setFitWidth(shipFitWidth);
         ship.setFitHeight(shipFitHeight);
-        System.out.println(ship.getLayoutX());
-        System.out.println(ship.getLayoutY());
     }
 
     public void createStarElement() {
@@ -147,7 +145,9 @@ public class GameElements {
         if (star.getLayoutY() > 1200) {
             setNewElementPosition(star);
         }
-
+        if(healthPill.getLayoutY() > 1200){
+            setNewElementPosition(healthPill);
+        }
         for (ImageView brownMeteor : brownMeteors) {
             if (brownMeteor.getLayoutY() > 900) {
                 setNewElementPosition(brownMeteor);

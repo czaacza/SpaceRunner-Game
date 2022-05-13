@@ -13,13 +13,15 @@ public class SubSceneManager {
     private final SpaceRunnerSubScene scoresSubScene;
     private final ShipChooserSubScene shipChooserSubScene;
 
+    private static final int SUBSCENE_WIDTH = 600;
+    private static final int SUBSCENE_HEIGHT = 400;
 
     public SubSceneManager(ViewManager viewManager) {
         this.viewManager = viewManager;
         this.defaultSubScene = new DefaultSubScene();
-        creditsSubScene = new SpaceRunnerSubScene();
-        helpSubScene = new SpaceRunnerSubScene();
-        scoresSubScene = new SpaceRunnerSubScene();
+        creditsSubScene = new SpaceRunnerSubScene(SUBSCENE_WIDTH, SUBSCENE_HEIGHT);
+        helpSubScene = new SpaceRunnerSubScene(SUBSCENE_WIDTH, SUBSCENE_HEIGHT);
+        scoresSubScene = new SpaceRunnerSubScene(SUBSCENE_WIDTH, SUBSCENE_HEIGHT);
         shipChooserSubScene = new ShipChooserSubScene(viewManager.getMainStage());
     }
 

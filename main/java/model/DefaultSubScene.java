@@ -10,7 +10,7 @@ public class DefaultSubScene extends SpaceRunnerSubScene{
 
     public DefaultSubScene() {
         super();
-        this.setSubSceneBackground(DEFAULT_BACKGROUND_IMAGE);
+        this.setSubSceneBackground(DEFAULT_BACKGROUND_IMAGE, 600, 400);
         this.moveSubScene();
 //        this.getPane().setStyle("-fx-border-color: #1EA7E1; -fx-border-width: 2px");
 
