@@ -62,13 +62,14 @@ public class ScoresSubScene extends SpaceRunnerSubScene {
             }
             Collections.sort(scoreRecords);
             for(int i = 0; i < bestScores.length; i++){
-                if(scoreRecords.get(i) != null){
+                try{
                     bestScores[i] = "" + scoreRecords.get(i).name + " : " + scoreRecords.get(i).score;
-                } else {
+                    System.out.println(bestScores[i]);
+                } catch(IndexOutOfBoundsException e){
                     bestScores[i] = "";
                 }
-                System.out.println(bestScores[i]);
             }
+
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't open file " + inputFile.getName());
         }
