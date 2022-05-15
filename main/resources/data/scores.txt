@@ -1,2 +1,3 @@
 Mati,19
-Adla,24
+Ada,24
+John,11
