@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 public class DefaultSubScene extends SpaceRunnerSubScene{
 
     private final static String DEFAULT_BACKGROUND_IMAGE = "src/main/resources/model/blue.png";
+    private LogoLabel logoLabel;
 
     public DefaultSubScene() {
         super();
@@ -23,11 +24,15 @@ public class DefaultSubScene extends SpaceRunnerSubScene{
 
         vbox.setLayoutX(45);
         vbox.setLayoutY(70);
-
         vbox.getChildren().add(titleLabel);
         vbox.getChildren().add(authorLabel);
 
         getPane().getChildren().add(vbox);
+
     }
 
+    @Override
+    public void moveSubScene() {
+        super.moveSubScene();
+    }
 }

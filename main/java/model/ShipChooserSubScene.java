@@ -14,7 +14,7 @@ public class ShipChooserSubScene extends SpaceRunnerSubScene{
 
     private List<ShipPicker> shipsList;
     private SHIP chosenShip;
-    private Stage menuStage;
+    private final Stage menuStage;
 
     public ShipChooserSubScene(Stage menuStage) {
         this.menuStage = menuStage;

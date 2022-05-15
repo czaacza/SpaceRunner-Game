@@ -56,7 +56,7 @@ public class ViewManager {
     private void createLogoLabel(){
         logoLabel = new LogoLabel("SPACE RUNNER", 48);
         logoLabel.setLayoutX(380);
-        logoLabel.setLayoutY(50);
+        logoLabel.setLayoutY(-50);
         mainPane.getChildren().add(logoLabel);
     }
 
@@ -68,4 +68,7 @@ public class ViewManager {
         return mainPane;
     }
 
+    public LogoLabel getLogoLabel() {
+        return logoLabel;
+    }
 }

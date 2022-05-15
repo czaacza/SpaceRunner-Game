@@ -18,7 +18,7 @@ public abstract class SpaceRunnerLabel extends Label {
         setLabelFont(DEFAULT_FONT_SIZE);
     }
 
-    protected void setLabelFont(int FONT_SIZE) {
+    public void setLabelFont(int FONT_SIZE) {
         try {
             setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
         } catch (FileNotFoundException e) {

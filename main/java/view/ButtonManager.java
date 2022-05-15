@@ -39,14 +39,18 @@ public class ButtonManager {
     }
 
     private void showSubScene(SpaceRunnerSubScene subScene) {
-
         if (sceneToHide != null) {
             sceneToHide.moveSubScene();
         }
-
         if (sceneToHide == subScene) {
             subScene = subSceneManager.getDefaultSubScene();
         }
+        if (subScene != subSceneManager.getDefaultSubScene()) {
+            viewManager.getLogoLabel().showLogoLabel();
+        } else {
+            viewManager.getLogoLabel().hideLogoLabel();
+        }
+
         subScene.moveSubScene();
         sceneToHide = subScene;
     }
@@ -69,6 +73,8 @@ public class ButtonManager {
             @Override
             public void handle(ActionEvent actionEvent) {
                 showSubScene(subSceneManager.getScoresSubScene());
+                subSceneManager.getScoresSubScene().loadBestScores();
+                subSceneManager.getScoresSubScene().createScoresTable();
             }
         });
     }

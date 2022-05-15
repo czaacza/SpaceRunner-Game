@@ -5,8 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 public class NameSaver extends VBox {
 
@@ -14,7 +13,6 @@ public class NameSaver extends VBox {
     private final int FONT_SIZE = 16;
     private final TextField nameField;
     private final SpaceRunnerButton saveButton;
-
 
     public NameSaver() {
         this.nameField = new TextField();

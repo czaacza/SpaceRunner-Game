@@ -1,6 +1,7 @@
 package view;
 
 import model.DefaultSubScene;
+import model.ScoresSubScene;
 import model.ShipChooserSubScene;
 import model.SpaceRunnerSubScene;
 
@@ -10,7 +11,7 @@ public class SubSceneManager {
     private final DefaultSubScene defaultSubScene;
     private final SpaceRunnerSubScene creditsSubScene;
     private final SpaceRunnerSubScene helpSubScene;
-    private final SpaceRunnerSubScene scoresSubScene;
+    private final ScoresSubScene scoresSubScene;
     private final ShipChooserSubScene shipChooserSubScene;
 
     private static final int SUBSCENE_WIDTH = 600;
@@ -21,7 +22,7 @@ public class SubSceneManager {
         this.defaultSubScene = new DefaultSubScene();
         creditsSubScene = new SpaceRunnerSubScene(SUBSCENE_WIDTH, SUBSCENE_HEIGHT);
         helpSubScene = new SpaceRunnerSubScene(SUBSCENE_WIDTH, SUBSCENE_HEIGHT);
-        scoresSubScene = new SpaceRunnerSubScene(SUBSCENE_WIDTH, SUBSCENE_HEIGHT);
+        scoresSubScene = new ScoresSubScene(SUBSCENE_WIDTH, SUBSCENE_HEIGHT);
         shipChooserSubScene = new ShipChooserSubScene(viewManager.getMainStage());
     }
 
@@ -42,7 +43,7 @@ public class SubSceneManager {
         return helpSubScene;
     }
 
-    public SpaceRunnerSubScene getScoresSubScene() {
+    public ScoresSubScene getScoresSubScene() {
         return scoresSubScene;
     }
 

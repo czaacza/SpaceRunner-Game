@@ -6,6 +6,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class EndGameScene extends SpaceRunnerSubScene {
 
     private final static String BACKGROUND_IMAGE = "src/main/resources/view/menu/grey_button09.png";
@@ -33,6 +38,14 @@ public class EndGameScene extends SpaceRunnerSubScene {
 
         createLabels();
         createNameSaver();
+
+        nameSaver.getSaveButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                saveResult();
+            }
+        });
+
         createQuitButton();
 
     }
@@ -98,5 +111,39 @@ public class EndGameScene extends SpaceRunnerSubScene {
         getPane().getChildren().add(nameSaver);
     }
 
+    private void saveResult() {
+        File outputFile = new File("src/main/resources/data/scores.txt");
+
+        if (!outputFile.exists()) {
+            try {
+                outputFile.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Cannot create new file " + outputFile.getName());
+            }
+        }
+
+        if (!outputFile.canWrite()) {
+            System.out.println("No perrmisions to write in file " + outputFile.getName());
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter(outputFile, true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+
+            if (!nameSaver.getNameField().getText().isEmpty() && nameSaver.getNameField().getText().length() < 30) {
+                printWriter.println(nameSaver.getNameField().getText() + "," + points);
+            } else {
+                System.out.println("namefield is empty/too long");
+            }
+
+            printWriter.close();
+            fileWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("Cannot write to file " + outputFile.getName());
+        }
+
+
+    }
 
 }

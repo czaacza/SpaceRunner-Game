@@ -21,7 +21,17 @@ public class InfoLabel extends SpaceRunnerLabel {
         setLabelBackground();
     }
 
-    private void setLabelBackground() {
+    public InfoLabel(String text, boolean isBackground) {
+        super(text);
+        setLabelFont(FONT_SIZE);
+        setPrefHeight(PREF_HEIGHT);
+        setPrefWidth(PREF_WIDTH);
+        if(isBackground){
+            setLabelBackground();
+        }
+    }
+
+    public void setLabelBackground() {
         BackgroundImage backgroundImage = new BackgroundImage(new Image(BACKGROUND_IMAGE, PREF_WIDTH, PREF_HEIGHT, false, true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
 

@@ -1,6 +1,8 @@
 package model;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Paint;
+import javafx.util.Duration;
 
 public class LogoLabel extends SpaceRunnerLabel {
 
@@ -26,6 +28,25 @@ public class LogoLabel extends SpaceRunnerLabel {
         setPrefWidth(PREF_WIDTH);
     }
 
+    public void showLogoLabel(){
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(0.3));
+        transition.setNode(this);
+
+        transition.setToY(100);
+
+        transition.play();
+    }
+
+    public void hideLogoLabel(){
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(0.3));
+        transition.setNode(this);
+
+        transition.setToY(0);
+
+        transition.play();
+    }
 
 
 }

@@ -92,13 +92,13 @@ public class GameViewManager {
         this.menuStage.hide();
         createBackground();
         createGameElements(chosenShip);
-        createGameLoop();
+//        createGameLoop();
         this.gameStage.setResizable(false);
         this.gameStage.setTitle("SpaceRunner");
         this.gameStage.show();
-//        EndGameScene endGameScene = new EndGameScene(points, gameStage, menuStage);
-//        endGameScene.moveSubScene();
-//        gamePane.getChildren().add(endGameScene);
+        EndGameScene endGameScene = new EndGameScene(points, gameStage, menuStage);
+        endGameScene.moveSubScene();
+        gamePane.getChildren().add(endGameScene);
     }
 
     private void createGameElements(SHIP chosenShip) {
