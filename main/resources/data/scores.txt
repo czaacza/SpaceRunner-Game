@@ -1,3 +1,5 @@
 Mati,19
 Ada,24
 John,11
+mati 199,0
+bababa,0

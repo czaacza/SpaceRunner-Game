@@ -64,7 +64,6 @@ public class ScoresSubScene extends SpaceRunnerSubScene {
             for(int i = 0; i < bestScores.length; i++){
                 try{
                     bestScores[i] = "" + scoreRecords.get(i).name + " : " + scoreRecords.get(i).score;
-                    System.out.println(bestScores[i]);
                 } catch(IndexOutOfBoundsException e){
                     bestScores[i] = "";
                 }
