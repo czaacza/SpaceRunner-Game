@@ -1,6 +1,8 @@
 package view;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -9,8 +11,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.EndGameScene;
 import model.SHIP;
+
+import java.util.Random;
 
 public class GameViewManager {
 
@@ -44,7 +49,6 @@ public class GameViewManager {
     public GameViewManager() {
         initializeStage();
         createKeyListeners();
-        gameElements = new GameElements(GAME_WIDTH, GAME_HEIGHT);
         gameStage.setX(2000);
         gameStage.setY(300);
     }
@@ -74,15 +78,19 @@ public class GameViewManager {
     }
 
     private void moveGameElements() {
-        gameElements.getStar().setLayoutY(gameElements.getStar().getLayoutY() + 4);
-        gameElements.getHealthPill().setLayoutY(gameElements.getHealthPill().getLayoutY() + 1.5);
+        double meteorSpeed = 3.0 + points * 0.5;
+        double starSpeed = 4.0 + points * 0.2;
+        double healthPillSpeed = 1.5;
+
+        gameElements.getStar().setLayoutY(gameElements.getStar().getLayoutY() + starSpeed);
+        gameElements.getHealthPill().setLayoutY(gameElements.getHealthPill().getLayoutY() + healthPillSpeed);
 
         for (ImageView brownMeteor : gameElements.getBrownMeteors()) {
-            brownMeteor.setLayoutY(brownMeteor.getLayoutY() + 3);
+            brownMeteor.setLayoutY(brownMeteor.getLayoutY() + meteorSpeed);
             brownMeteor.setRotate(brownMeteor.getRotate() + 4);
         }
         for (ImageView greyMeteor : gameElements.getGreyMeteors()) {
-            greyMeteor.setLayoutY(greyMeteor.getLayoutY() + 3);
+            greyMeteor.setLayoutY(greyMeteor.getLayoutY() + meteorSpeed);
             greyMeteor.setRotate(greyMeteor.getRotate() + 4);
         }
     }
@@ -90,26 +98,29 @@ public class GameViewManager {
     public void createNewGame(Stage menuStage, SHIP chosenShip) {
         this.menuStage = menuStage;
         this.menuStage.hide();
+        gameElements = new GameElements(GAME_WIDTH, GAME_HEIGHT);
+        this.gameElements.setChosenShip(chosenShip);
         createBackground();
-        createGameElements(chosenShip);
-//        createGameLoop();
+        createGameElements();
+        createGameLoop();
         this.gameStage.setResizable(false);
         this.gameStage.setTitle("SpaceRunner");
         this.gameStage.show();
-        EndGameScene endGameScene = new EndGameScene(points, gameStage, menuStage);
-        endGameScene.moveSubScene();
-        gamePane.getChildren().add(endGameScene);
+//        EndGameScene endGameScene = new EndGameScene(points, gameStage, menuStage);
+//        endGameScene.moveSubScene();
+//        gamePane.getChildren().add(endGameScene);
     }
 
-    private void createGameElements(SHIP chosenShip) {
+    private void createGameElements() {
         playerHealthPoints = 3;
 
-        gameElements.createShip(chosenShip);
+        gameElements.createShip();
         gameElements.createStarElement();
         gameElements.createMeteors();
         gameElements.createPointsLabel();
-        gameElements.createPlayerHealthImages(chosenShip);
+        gameElements.createPlayerHealthImages();
         gameElements.createHealthPill();
+        gameElements.createDamageImages();
 
         gamePane.getChildren().addAll(
                 gameElements.getShip(),
@@ -144,6 +155,10 @@ public class GameViewManager {
     }
 
     private void moveShip() {
+        int shipSpeed = 3;
+        if (gameElements.getChosenShip() == SHIP.INVADER) {
+            shipSpeed = 4;
+        }
         if (isLeftKeyPressed && !isRightKeyPressed) {
             if (angle > -30) {
                 angle -= 5;
@@ -212,6 +227,7 @@ public class GameViewManager {
     }
 
     private void checkIfCollision() {
+        //star
         if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, gameElements.getStar().getLayoutX() + 15.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, gameElements.getStar().getLayoutY() + 15) < SHIP_RADIUS + STAR_RADIUS) {
             gameElements.setNewElementPosition(gameElements.getStar());
             points++;
@@ -226,27 +242,55 @@ public class GameViewManager {
             gameElements.getPointsLabel().setText(textToSet);
         }
 
+        //healthPill
         if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, gameElements.getHealthPill().getLayoutX() + 12.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, gameElements.getHealthPill().getLayoutY() + 12.5) < SHIP_RADIUS + HEALTH_PILL_RADIUS) {
             addPlayerLife();
             gameElements.setNewElementPosition(gameElements.getHealthPill());
         }
 
+        //meteors
         for (ImageView brownMeteor : gameElements.getBrownMeteors()) {
             if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, brownMeteor.getLayoutX() + 22.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, brownMeteor.getLayoutY() + 20) < SHIP_RADIUS + METEOR_RADIUS) {
                 removePlayerLife();
                 gameElements.setNewElementPosition(brownMeteor);
+                generateDamageAnimation();
             }
         }
         for (ImageView greyMeteor : gameElements.getGreyMeteors()) {
             if (calculateDistance(gameElements.getShip().getLayoutX() + gameElements.getShip().getFitWidth() / 2, greyMeteor.getLayoutX() + 22.5, gameElements.getShip().getLayoutY() + gameElements.getShip().getFitHeight() / 2, greyMeteor.getLayoutY() + 20) < SHIP_RADIUS + METEOR_RADIUS) {
                 removePlayerLife();
                 gameElements.setNewElementPosition(greyMeteor);
+                generateDamageAnimation();
             }
         }
     }
 
+    private void generateDamageAnimation() {
+        Random random = new Random();
+        String damageImageUrl = gameElements.getDamageImageUrls().get(random.nextInt(2));
+
+        ImageView damageImage = new ImageView(damageImageUrl);
+        damageImage.setLayoutX(gameElements.getShip().getLayoutX());
+        damageImage.setLayoutY(gameElements.getShip().getLayoutY() - 50);
+        gamePane.getChildren().add(damageImage);
+
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.15), damageImage);
+        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(0.2), damageImage);
+        RotateTransition shipRotateTransition = new RotateTransition(Duration.seconds(0.2), gameElements.getShip());
+        scaleTransition.setByX(1.2);
+        scaleTransition.setByY(1.2);
+        rotateTransition.setByAngle(15);
+        shipRotateTransition.setByAngle(new Random().nextDouble(20) - 20);
+
+        scaleTransition.setOnFinished(e -> damageImage.setVisible(false));
+
+        scaleTransition.play();
+        rotateTransition.play();
+        shipRotateTransition.play();
+    }
+
     private void addPlayerLife() {
-        if(playerHealthPoints < 3){
+        if (playerHealthPoints < 3) {
             gamePane.getChildren().add(gameElements.getPlayerHealthImages()[playerHealthPoints]);
             playerHealthPoints++;
         }
@@ -260,7 +304,6 @@ public class GameViewManager {
             gamePane.getChildren().add(endGameScene);
             endGameScene.moveSubScene();
             gameTimer.stop();
-
         }
     }
 

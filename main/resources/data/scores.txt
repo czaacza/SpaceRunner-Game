@@ -3,3 +3,8 @@ Ada,24
 John,11
 mati 199,0
 bababa,0
+Mati,10
+mat,0
+f,0
+da,0
+da,0

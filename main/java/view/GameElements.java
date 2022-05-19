@@ -4,6 +4,8 @@ import javafx.scene.image.ImageView;
 import model.SHIP;
 import model.SmallInfoLabel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameElements {
@@ -11,6 +13,7 @@ public class GameElements {
     private int GAME_HEIGHT;
 
     private ImageView ship;
+    private SHIP chosenShip;
 
     private ImageView[] brownMeteors;
     private ImageView[] greyMeteors;
@@ -21,12 +24,13 @@ public class GameElements {
     private SmallInfoLabel pointsLabel;
     private ImageView[] playerHealthImages;
 
-
     private ImageView healthPill;
     private final static String HEALTH_PILL_IMAGE = "file:src/main/resources/model/game_models/pill_red.png";
 
     private ImageView star;
     private final static String GOLD_STAR_IMAGE = "file:src/main/resources/model/game_models/star_gold.png";
+
+    private List<String> damageImageUrls;
 
     Random randomPositionGenerator;
 
@@ -36,7 +40,7 @@ public class GameElements {
         randomPositionGenerator = new Random();
     }
 
-    public void createShip(SHIP chosenShip) {
+    public void createShip() {
         ship = new ImageView(chosenShip.getShipURL());
         ship.setLayoutX(0.5 * GAME_WIDTH - 49.5);
         if(chosenShip == SHIP.UFO){
@@ -74,7 +78,7 @@ public class GameElements {
         pointsLabel.setLayoutY(20);
     }
 
-    public void createPlayerHealthImages(SHIP chosenShip) {
+    public void createPlayerHealthImages() {
         playerHealthImages = new ImageView[3];
         for (int i = 0; i < playerHealthImages.length; i++) {
             playerHealthImages[i] = new ImageView(chosenShip.getLifeURL());
@@ -108,6 +112,13 @@ public class GameElements {
         setNewElementPosition(healthPill);
     }
 
+    public void createDamageImages(){
+        damageImageUrls = new ArrayList<>();
+        damageImageUrls.add("file:src/main/resources/model/game_models/playerShip1_damage1.png");
+        damageImageUrls.add("file:src/main/resources/model/game_models/playerShip2_damage1.png");
+        damageImageUrls.add("file:src/main/resources/model/game_models/playerShip3_damage1.png");
+    }
+
     public ImageView getShip() {
         return ship;
     }
@@ -134,6 +145,18 @@ public class GameElements {
 
     public ImageView getStar() {
         return star;
+    }
+
+    public SHIP getChosenShip() {
+        return chosenShip;
+    }
+
+    public void setChosenShip(SHIP chosenShip) {
+        this.chosenShip = chosenShip;
+    }
+
+    public List<String> getDamageImageUrls() {
+        return damageImageUrls;
     }
 
     public void setNewElementPosition(ImageView element) {

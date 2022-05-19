@@ -132,8 +132,8 @@ public class EndGameScene extends SpaceRunnerSubScene {
 
             if (!nameSaver.getNameField().getText().isEmpty() && nameSaver.getNameField().getText().length() < 30) {
                 printWriter.println(nameSaver.getNameField().getText() + "," + points);
-                gameStage.close();
-                menuStage.show();
+                nameSaver.getSaveButton().setDisable(true);
+                nameSaver.getNameField().setDisable(true);
             } else {
                 System.out.println("namefield is empty/too long");
             }
