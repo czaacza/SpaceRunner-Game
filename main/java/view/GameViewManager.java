@@ -11,11 +11,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import model.EndGameScene;
 import model.SHIP;
 
 import java.util.Random;
+
+import static javafx.util.Duration.seconds;
 
 public class GameViewManager {
 
@@ -34,6 +35,7 @@ public class GameViewManager {
     private boolean isRightKeyPressed;
     private int angle;
     private AnimationTimer gameTimer;
+    private boolean wasJustHit = false;
 
     private GridPane gridPane1;
     private GridPane gridPane2;
@@ -179,10 +181,20 @@ public class GameViewManager {
             }
         }
         if (!isLeftKeyPressed && !isRightKeyPressed) {
-            if (angle < 0) {
-                angle += 5;
-            } else if (angle > 0) {
-                angle -= 5;
+            if (wasJustHit) {
+                if (angle < 0) {
+                    angle += 2;
+                } else if (angle > 0) {
+                    angle -= 2;
+                } else {
+                    wasJustHit = false;
+                }
+            } else {
+                if (angle < 0) {
+                    angle += 5;
+                } else if (angle > 0) {
+                    angle -= 5;
+                }
             }
             gameElements.getShip().setRotate(angle);
         }
@@ -274,19 +286,19 @@ public class GameViewManager {
         damageImage.setLayoutY(gameElements.getShip().getLayoutY() - 50);
         gamePane.getChildren().add(damageImage);
 
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.15), damageImage);
-        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(0.2), damageImage);
-        RotateTransition shipRotateTransition = new RotateTransition(Duration.seconds(0.2), gameElements.getShip());
+        ScaleTransition scaleTransition = new ScaleTransition(seconds(0.2), damageImage);
+        RotateTransition rotateTransition = new RotateTransition(seconds(0.2), damageImage);
+
+
         scaleTransition.setByX(1.2);
         scaleTransition.setByY(1.2);
         rotateTransition.setByAngle(15);
-        shipRotateTransition.setByAngle(new Random().nextDouble(20) - 20);
-
         scaleTransition.setOnFinished(e -> damageImage.setVisible(false));
 
         scaleTransition.play();
         rotateTransition.play();
-        shipRotateTransition.play();
+        wasJustHit = true;
+        angle = new Random().nextInt(40) - 40;
     }
 
     private void addPlayerLife() {
