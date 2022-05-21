@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.EndGameScene;
 import model.SHIP;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import static javafx.util.Duration.seconds;
@@ -30,6 +31,10 @@ public class GameViewManager {
 
     private int playerHealthPoints;
     private int points;
+    private double [] brownMeteorSpeed;
+    private double [] greyMeteorSpeed;
+    private final double starSpeed = 4.0 + points * 0.2;
+    private final double healthPillSpeed = 1.5;
 
     private boolean isLeftKeyPressed;
     private boolean isRightKeyPressed;
@@ -80,27 +85,24 @@ public class GameViewManager {
     }
 
     private void moveGameElements() {
-        double meteorSpeed = 3.0 + points * 0.5;
-        double starSpeed = 4.0 + points * 0.2;
-        double healthPillSpeed = 1.5;
-
         gameElements.getStar().setLayoutY(gameElements.getStar().getLayoutY() + starSpeed);
         gameElements.getHealthPill().setLayoutY(gameElements.getHealthPill().getLayoutY() + healthPillSpeed);
 
-        for (ImageView brownMeteor : gameElements.getBrownMeteors()) {
-            brownMeteor.setLayoutY(brownMeteor.getLayoutY() + meteorSpeed);
-            brownMeteor.setRotate(brownMeteor.getRotate() + 4);
+        for (int i = 0; i < gameElements.getBrownMeteors().length; i++) {
+            gameElements.getBrownMeteors()[i].setLayoutY(gameElements.getBrownMeteors()[i].getLayoutY() + brownMeteorSpeed[i]);
+            gameElements.getBrownMeteors()[i].setRotate(gameElements.getBrownMeteors()[i].getRotate() + 4);
         }
-        for (ImageView greyMeteor : gameElements.getGreyMeteors()) {
-            greyMeteor.setLayoutY(greyMeteor.getLayoutY() + meteorSpeed);
-            greyMeteor.setRotate(greyMeteor.getRotate() + 4);
+        for (int i = 0; i < gameElements.getGreyMeteors().length; i++) {
+            gameElements.getGreyMeteors()[i].setLayoutY(gameElements.getGreyMeteors()[i].getLayoutY() + greyMeteorSpeed[i]);
+            gameElements.getGreyMeteors()[i].setRotate(gameElements.getGreyMeteors()[i].getRotate() + 4);
         }
     }
+
 
     public void createNewGame(Stage menuStage, SHIP chosenShip) {
         this.menuStage = menuStage;
         this.menuStage.hide();
-        gameElements = new GameElements(GAME_WIDTH, GAME_HEIGHT);
+        gameElements = new GameElements(GAME_WIDTH, GAME_HEIGHT, points);
         this.gameElements.setChosenShip(chosenShip);
         createBackground();
         createGameElements();
@@ -123,6 +125,10 @@ public class GameViewManager {
         gameElements.createPlayerHealthImages();
         gameElements.createHealthPill();
         gameElements.createDamageImages();
+        brownMeteorSpeed = new double[gameElements.getBrownMeteors().length];
+        greyMeteorSpeed = new double[gameElements.getGreyMeteors().length];
+        Arrays.fill(brownMeteorSpeed, 3.0);
+        Arrays.fill(brownMeteorSpeed, 3.0);
 
         gamePane.getChildren().addAll(
                 gameElements.getShip(),
@@ -141,7 +147,7 @@ public class GameViewManager {
             public void handle(long l) {
                 moveBackground();
                 moveGameElements();
-                gameElements.reallocateGameElements();
+                reallocateGameElements();
                 checkIfCollision();
                 moveShip();
             }
@@ -149,6 +155,29 @@ public class GameViewManager {
         gameTimer.start();
     }
 
+    private void reallocateGameElements() {
+        if (gameElements.getStar().getLayoutY() > 1200) {
+            gameElements.setNewElementPosition(gameElements.getStar());
+        }
+
+        if(gameElements.getHealthPill().getLayoutY() > 1200){
+            gameElements.setNewElementPosition(gameElements.getHealthPill());
+        }
+
+        for (int i = 0; i < gameElements.getBrownMeteors().length; i++) {
+            if (gameElements.getBrownMeteors()[i].getLayoutY() > 900) {
+                gameElements.setNewElementPosition(gameElements.getBrownMeteors()[i]);
+                brownMeteorSpeed[i] = 3.0 + points * 0.5;
+            }
+        }
+
+        for (int i = 0; i < gameElements.getGreyMeteors().length; i++) {
+            if (gameElements.getGreyMeteors()[i].getLayoutY() > 900) {
+                gameElements.setNewElementPosition(gameElements.getGreyMeteors()[i]);
+                greyMeteorSpeed[i] = 3.0 + points * 0.5;
+            }
+        }
+    }
     private void initializeStage() {
         gamePane = new AnchorPane();
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);

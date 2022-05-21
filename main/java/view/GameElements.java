@@ -33,10 +33,12 @@ public class GameElements {
     private List<String> damageImageUrls;
 
     Random randomPositionGenerator;
+    int points;
 
-    public GameElements(int GAME_WIDTH, int GAME_HEIGHT) {
+    public GameElements(int GAME_WIDTH, int GAME_HEIGHT, int points) {
         this.GAME_WIDTH = GAME_WIDTH;
         this.GAME_HEIGHT = GAME_HEIGHT;
+        this.points = points;
         randomPositionGenerator = new Random();
     }
 
@@ -164,23 +166,6 @@ public class GameElements {
         element.setLayoutY(-(randomPositionGenerator.nextInt(3200) + 600));
     }
 
-    public void reallocateGameElements() {
-        if (star.getLayoutY() > 1200) {
-            setNewElementPosition(star);
-        }
-        if(healthPill.getLayoutY() > 1200){
-            setNewElementPosition(healthPill);
-        }
-        for (ImageView brownMeteor : brownMeteors) {
-            if (brownMeteor.getLayoutY() > 900) {
-                setNewElementPosition(brownMeteor);
-            }
-        }
-        for (ImageView greyMeteor : greyMeteors) {
-            if (greyMeteor.getLayoutY() > 900) {
-                setNewElementPosition(greyMeteor);
-            }
-        }
-    }
+
 
 }
