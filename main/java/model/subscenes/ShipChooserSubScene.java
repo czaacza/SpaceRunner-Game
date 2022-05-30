@@ -1,16 +1,17 @@
-package model;
+package model.subscenes;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.*;
 import view.GameViewManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShipChooserSubScene extends SpaceRunnerSubScene{
+public class ShipChooserSubScene extends SpaceRunnerSubScene {
 
     private List<ShipPicker> shipsList;
     private SHIP chosenShip;

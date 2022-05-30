@@ -1,7 +1,9 @@
-package model;
+package model.subscenes;
 
 import javafx.geometry.Pos;
 import javafx.scene.paint.Paint;
+import model.InfoLabel;
+import model.SpaceRunnerSubScene;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,10 +1,13 @@
-package model;
+package model.subscenes;
 
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
+import model.AuthorLabel;
+import model.LogoLabel;
+import model.SpaceRunnerSubScene;
 
-public class DefaultSubScene extends SpaceRunnerSubScene{
+public class DefaultSubScene extends SpaceRunnerSubScene {
 
     private final static String DEFAULT_BACKGROUND_IMAGE = "src/main/resources/model/blue.png";
     private LogoLabel logoLabel;
