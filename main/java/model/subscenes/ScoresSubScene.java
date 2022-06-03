@@ -38,7 +38,7 @@ public class ScoresSubScene extends SpaceRunnerSubScene {
     public void createScoresTable() {
         for (int i = 0; i < tableLabels.length; i++) {
             tableLabels[i] = new InfoLabel(i + 1 + ". " + bestScores[i], false);
-            tableLabels[i].setLayoutX(210);
+            tableLabels[i].setLayoutX(150);
             tableLabels[i].setLayoutY(100 + i * 50);
             tableLabels[i].setPrefHeight(55);
             tableLabels[i].setPrefWidth(400);

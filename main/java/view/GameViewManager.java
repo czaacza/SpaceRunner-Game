@@ -33,7 +33,7 @@ public class GameViewManager {
     private int points;
     private double [] brownMeteorSpeed;
     private double [] greyMeteorSpeed;
-    private final double starSpeed = 4.0 + points * 0.2;
+    private final double starSpeed = 5.0;
     private final double healthPillSpeed = 1.5;
 
     private boolean isLeftKeyPressed;
